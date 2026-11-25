@@ -108,4 +108,8 @@ The [product specification](PRODUCT-SPEC.md) is the target. The [overlay](spec/b
 
 ## Licensing
 
-Bambastic includes the Bambuddy browser application under the [GNU Affero General Public License v3](LICENSE). The [frontend notice](frontend/NOTICE) identifies the upstream revision. The pinned OpenBridge artwork is distributed with its [license](frontend/public/OpenBridge-LICENSE.txt) and [notice](frontend/public/OpenBridge-NOTICE.txt).
+Original work by Bambastic contributors is available under the [MIT License](LICENSE).
+
+The browser application adapts Bambuddy v1.3.2, which carries the GNU Affero General Public License v3 (AGPL). The standard Bambastic executable embeds that application, so distributions of the combined build must also satisfy the AGPL. Bambuddy-derived material elsewhere in the repository, including the reference API and database schema, retains its upstream terms. See the [AGPL text](frontend/LICENSE) and [upstream notice](frontend/NOTICE).
+
+OpenBridge artwork and bundled label fonts carry their own licenses. See the [OpenBridge license](frontend/public/OpenBridge-LICENSE.txt), [artwork notice](frontend/public/OpenBridge-NOTICE.txt), and [font licenses](internal/management/labelfonts/).
