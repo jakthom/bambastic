@@ -1,9 +1,6 @@
 # Bambastic
 
-Bambastic is a self-hosted Bambu printer farm application. One Go process serves the React operator interface, the REST API, live WebSocket updates and an MCP endpoint. SQLite is the default database. PostgreSQL is also supported. Both use a local installation directory for managed files, encryption keys and device state. The browser application adapts the Bambuddy v.1.3.2 interface, uses OpenBridge icons and defaults to a blue, white and aqua light theme. Existing users can select dark or system themes.
-
-
-An independent MIT frontend is available in the [Bambastic browser console](web/README.md). Build it with `just build-console` to run its implemented workflows against the same Go backend.
+Bambastic is a self-hosted Bambu printer farm application. One Go process serves the React operator interface, the REST API, live WebSocket updates and an MCP endpoint. SQLite is the default database. PostgreSQL is also supported. Both use a local installation directory for managed files, encryption keys and device state. The [browser console](frontend/README.md) is an independent implementation written in React and TypeScript.
 
 ## Run locally
 
@@ -38,7 +35,7 @@ A PostgreSQL `DATABASE_URL` is also recognized. Use `--database-url` and `--post
 
 ## Connect an MCP client
 
-Open **MCP Guide** in the sidebar for setup instructions for ChatGPT, Claude, Grok, Codex CLI, LM Studio, Goose with Ollama, and other stdio clients. The guide includes the current operation catalog and a read-only prompt to test the connection. [Open the guide on a local installation](http://127.0.0.1:8080/mcp-guide)
+Open **MCP connections**, choose a client and click its installation block to copy the command, URL or configuration. Codex CLI and Claude Code support local stdio and remote HTTP. [Local MCP connections page](http://127.0.0.1:8080/mcp-guide)
 
 **Streamable HTTP.** Append `/mcp` to the installation’s URL. Protected installations support OAuth with PKCE or a scoped Bambastic API key. ChatGPT, Claude remote connectors, and Grok make requests from their providers’ servers, so configure an authenticated HTTPS endpoint reachable from the provider. ChatGPT also supports Secure MCP Tunnel from a machine that can reach a private installation. [ChatGPT setup](https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt) · [OpenAI Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) · [Claude remote connectors](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp) · [Grok connectors](https://docs.x.ai/grok/connectors)
 
@@ -113,6 +110,6 @@ The [product specification](PRODUCT-SPEC.md) is the target. The [overlay](spec/b
 
 Original work by Bambastic contributors is available under the [MIT License](LICENSE).
 
-The browser application adapts Bambuddy v1.3.2, which carries the GNU Affero General Public License v3 (AGPL). The standard Bambastic executable embeds that application, so distributions of the combined build must also satisfy the AGPL. Bambuddy-derived material elsewhere in the repository, including the reference API and database schema, retains its upstream terms. See the [AGPL text](frontend/LICENSE) and [upstream notice](frontend/NOTICE).
+The new frontend is licensed under MIT. Its bundle includes dependency licenses. The repository also includes reference material derived from Bambuddy v1.3.2, including the API description and database schema embedded by the Go backend. Those materials retain their upstream terms. [Frontend license](frontend/LICENSE) · [Bambuddy license](spec/upstream/Bambuddy-LICENSE)
 
-OpenBridge artwork and bundled label fonts carry their own licenses. See the [OpenBridge license](frontend/public/OpenBridge-LICENSE.txt), [artwork notice](frontend/public/OpenBridge-NOTICE.txt), and [font licenses](internal/management/labelfonts/).
+OpenBridge artwork and bundled label fonts carry their own terms. [OpenBridge license](internal/openbridge/LICENSE) · [Artwork notice](internal/openbridge/NOTICE) · [Font licenses](internal/management/labelfonts/)

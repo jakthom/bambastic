@@ -1,4 +1,4 @@
-//go:build !dev && !console
+//go:build !dev
 
 package main
 

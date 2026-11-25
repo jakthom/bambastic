@@ -1,6 +1,6 @@
 # Implementation status
 
-Bambastic builds as a Go host and a Go SpoolBuddy companion. The host embeds the adapted Bambuddy v.1.3.2 React, TypeScript and Vite application. The reference specification remains the acceptance target. The executable can report the current route coverage for this checkout.
+Bambastic builds as a Go host and a Go SpoolBuddy companion. The host embeds the original MIT browser console. The workflow table below describes backend capabilities and the earlier interface. The [frontend status](../frontend/README.md) identifies the workflows implemented by this rewrite. The reference specification remains the acceptance target. The executable can report the current route coverage for this checkout.
 
 ```sh
 just build

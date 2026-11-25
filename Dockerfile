@@ -1,9 +1,8 @@
 FROM node:22-bookworm-slim AS web
 WORKDIR /src/frontend
-COPY frontend/package*.json frontend/.npmrc ./
+COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
-COPY internal/bridge/catalog.json /src/internal/bridge/catalog.json
 RUN npm run build
 
 FROM golang:1.25-bookworm AS build

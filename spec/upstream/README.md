@@ -1,0 +1,1 @@
+The reference OpenAPI document and SQLite schema in the parent directory come from Bambuddy v1.3.2, revision b7d894b57c0a373f66dc0de49680865b02b3aae5. See the [upstream project](https://github.com/maziggy/bambuddy) and [license](Bambuddy-LICENSE).
