@@ -47,3 +47,9 @@ dev-backend: _ensure-frontend
 # Start the Vite development server.
 dev-frontend:
     cd frontend && npm run dev
+
+# Build the original MIT browser console with the Go backend.
+build-console:
+    cd web && npm ci && npm run build
+    mkdir -p bin
+    go build -tags console -trimpath -o bin/bambastic-console .

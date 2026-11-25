@@ -2,6 +2,9 @@
 
 Bambastic is a self-hosted Bambu printer farm application. One Go process serves the React operator interface, the REST API, live WebSocket updates and an MCP endpoint. SQLite is the default database. PostgreSQL is also supported. Both use a local installation directory for managed files, encryption keys and device state. The browser application adapts the Bambuddy v.1.3.2 interface, uses OpenBridge icons and defaults to a blue, white and aqua light theme. Existing users can select dark or system themes.
 
+
+An independent MIT frontend is available in the [Bambastic browser console](web/README.md). Build it with `just build-console` to run its implemented workflows against the same Go backend.
+
 ## Run locally
 
 Building from source requires `just`, Go 1.25.2 or later, and Node.js 22.12 or later with npm. Run `just --list` from the repository root to see the available recipes.
