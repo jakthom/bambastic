@@ -1,0 +1,515 @@
+/**
+ * Tests for useSpoolBuddyState hook:
+ * - Reducer handles all action types correctly
+ * - Computed properties (remainingWeight, netWeight) work
+ * - Window events dispatch state updates
+ */
+
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
+import { useSpoolBuddyState } from '../../hooks/useSpoolBuddyState';
+
+function dispatchCustomEvent(name: string, detail: Record<string, unknown>) {
+  window.dispatchEvent(new CustomEvent(name, { detail }));
+}
+
+describe('useSpoolBuddyState', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('starts with initial state', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+    expect(result.current.weight).toBeNull();
+    expect(result.current.weightStable).toBe(false);
+    expect(result.current.rawAdc).toBeNull();
+    expect(result.current.matchedSpool).toBeNull();
+    expect(result.current.unknownTagUid).toBeNull();
+    expect(result.current.deviceOnline).toBe(false);
+    expect(result.current.deviceId).toBeNull();
+    expect(result.current.remainingWeight).toBeNull();
+    expect(result.current.netWeight).toBeNull();
+  });
+
+  it('WEIGHT_UPDATE sets weight, stable, rawAdc, deviceOnline=true', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-weight', {
+        weight_grams: 250.5,
+        stable: true,
+        raw_adc: 12345,
+        device_id: 'dev-1',
+      });
+    });
+
+    expect(result.current.weight).toBe(250.5);
+    expect(result.current.weightStable).toBe(true);
+    expect(result.current.rawAdc).toBe(12345);
+    expect(result.current.deviceOnline).toBe(true);
+    expect(result.current.deviceId).toBe('dev-1');
+  });
+
+  it('TAG_MATCHED sets matchedSpool and clears unknownTagUid', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    // First set an unknown tag
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-unknown-tag', {
+        tag_uid: 'AA:BB:CC',
+        device_id: 'dev-1',
+      });
+    });
+    expect(result.current.unknownTagUid).toBe('AA:BB:CC');
+
+    // Now match a spool
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', {
+        tag_uid: 'AA:BB:CC',
+        device_id: 'dev-1',
+        spool: {
+          id: 42,
+          material: 'PLA',
+          subtype: 'Silk',
+          color_name: 'Red',
+          rgba: 'FF0000FF',
+          brand: 'Bambu',
+          label_weight: 1000,
+          core_weight: 250,
+          weight_used: 100,
+        },
+      });
+    });
+
+    expect(result.current.matchedSpool).not.toBeNull();
+    expect(result.current.matchedSpool!.id).toBe(42);
+    expect(result.current.matchedSpool!.material).toBe('PLA');
+    expect(result.current.matchedSpool!.subtype).toBe('Silk');
+    expect(result.current.matchedSpool!.color_name).toBe('Red');
+    expect(result.current.matchedSpool!.brand).toBe('Bambu');
+    expect(result.current.matchedSpool!.label_weight).toBe(1000);
+    expect(result.current.matchedSpool!.core_weight).toBe(250);
+    expect(result.current.matchedSpool!.weight_used).toBe(100);
+    expect(result.current.unknownTagUid).toBeNull();
+  });
+
+  it('TAG_MATCHED keeps the extra colours and effect the disc is painted with (#3033)', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+    const spool = { id: 23, material: 'PLA', rgba: '044482FF', label_weight: 1000, core_weight: 250, weight_used: 0 };
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', {
+        tag_uid: 'AA',
+        spool: { ...spool, extra_colors: '044482,f8d008', effect_type: 'dual-color' },
+      });
+    });
+    expect(result.current.matchedSpool!.extra_colors).toBe('044482,f8d008');
+    expect(result.current.matchedSpool!.effect_type).toBe('dual-color');
+
+    // A backend from before #3033 sends neither field.
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', { tag_uid: 'BB', spool });
+    });
+    expect(result.current.matchedSpool!.extra_colors).toBeNull();
+    expect(result.current.matchedSpool!.effect_type).toBeNull();
+  });
+
+  it('UNKNOWN_TAG sets unknownTagUid and clears matchedSpool', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    // First match a spool
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', {
+        tag_uid: 'AA:BB:CC',
+        device_id: 'dev-1',
+        spool: {
+          id: 1,
+          material: 'PLA',
+          label_weight: 1000,
+          core_weight: 250,
+          weight_used: 0,
+        },
+      });
+    });
+    expect(result.current.matchedSpool).not.toBeNull();
+
+    // Now detect unknown tag
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-unknown-tag', {
+        tag_uid: 'DD:EE:FF',
+        device_id: 'dev-1',
+      });
+    });
+
+    expect(result.current.unknownTagUid).toBe('DD:EE:FF');
+    expect(result.current.matchedSpool).toBeNull();
+  });
+
+  it('UNKNOWN_TAG with tray_uuid sets unknownTrayUuid', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-unknown-tag', {
+        tag_uid: 'AABB1122334455FF',
+        tray_uuid: 'DEADBEEFDEADBEEFDEADBEEFDEADBEEF',
+        device_id: 'dev-1',
+      });
+    });
+
+    expect(result.current.unknownTagUid).toBe('AABB1122334455FF');
+    expect(result.current.unknownTrayUuid).toBe('DEADBEEFDEADBEEFDEADBEEFDEADBEEF');
+  });
+
+  it('UNKNOWN_TAG keeps the data decoded from a Bambu tag until the tag is lifted (#2685)', () => {
+    const tagData = {
+      material: 'PLA',
+      subtype: 'Basic',
+      color_name: 'Cyan',
+      rgba: '0086D6FF',
+      extra_colors: null,
+      effect_type: null,
+      brand: 'Bambu Lab',
+      label_weight: 1000,
+      slicer_filament: 'GFA00',
+      slicer_filament_name: 'Bambu PLA Basic',
+      nozzle_temp_min: 190,
+      nozzle_temp_max: 230,
+      core_weight: 250,
+      core_weight_catalog_id: 7,
+      variant_id: 'A00-B08',
+      diameter: 1.75,
+      drying_temp: 55,
+      drying_time: 8,
+    };
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-unknown-tag', { tag_uid: '865947E2', device_id: 'dev-1', tag_data: tagData });
+    });
+    expect(result.current.unknownTagData).toEqual(tagData);
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-removed', { tag_uid: '865947E2', device_id: 'dev-1' });
+    });
+    expect(result.current.unknownTagData).toBeNull();
+  });
+
+  it('UNKNOWN_TAG without tag_data leaves unknownTagData empty (#2685)', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-unknown-tag', { tag_uid: 'AABB1122334455FF', device_id: 'dev-1' });
+    });
+    expect(result.current.unknownTagUid).toBe('AABB1122334455FF');
+    expect(result.current.unknownTagData).toBeNull();
+  });
+
+  it('UNKNOWN_TAG without tray_uuid leaves unknownTrayUuid null', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-unknown-tag', {
+        tag_uid: 'AABB1122',
+        device_id: 'dev-1',
+      });
+    });
+
+    expect(result.current.unknownTagUid).toBe('AABB1122');
+    expect(result.current.unknownTrayUuid).toBeNull();
+  });
+
+  it('TAG_MATCHED clears unknownTrayUuid', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    // Set tray_uuid via unknown tag
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-unknown-tag', {
+        tag_uid: 'AABB1122334455FF',
+        tray_uuid: 'DEADBEEFDEADBEEFDEADBEEFDEADBEEF',
+        device_id: 'dev-1',
+      });
+    });
+    expect(result.current.unknownTrayUuid).toBe('DEADBEEFDEADBEEFDEADBEEFDEADBEEF');
+
+    // Match resolves it
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', {
+        tag_uid: 'AABB1122334455FF',
+        device_id: 'dev-1',
+        spool: {
+          id: 5,
+          material: 'PLA',
+          label_weight: 1000,
+          core_weight: 250,
+          weight_used: 0,
+        },
+      });
+    });
+
+    expect(result.current.unknownTrayUuid).toBeNull();
+    expect(result.current.matchedSpool).not.toBeNull();
+  });
+
+  it('TAG_REMOVED clears unknownTrayUuid', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-unknown-tag', {
+        tag_uid: 'AABB1122334455FF',
+        tray_uuid: 'CAFEBABECAFEBABECAFEBABECAFEBABE',
+        device_id: 'dev-1',
+      });
+    });
+    expect(result.current.unknownTrayUuid).toBe('CAFEBABECAFEBABECAFEBABECAFEBABE');
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-removed', { device_id: 'dev-1' });
+    });
+
+    expect(result.current.unknownTrayUuid).toBeNull();
+    expect(result.current.unknownTagUid).toBeNull();
+  });
+
+  it('TAG_REMOVED clears both matchedSpool and unknownTagUid', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    // Set a matched spool
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', {
+        tag_uid: 'AA:BB:CC',
+        device_id: 'dev-1',
+        spool: {
+          id: 1,
+          material: 'PLA',
+          label_weight: 1000,
+          core_weight: 250,
+          weight_used: 0,
+        },
+      });
+    });
+    expect(result.current.matchedSpool).not.toBeNull();
+
+    // Remove tag
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-removed', { device_id: 'dev-1' });
+    });
+
+    expect(result.current.matchedSpool).toBeNull();
+    expect(result.current.unknownTagUid).toBeNull();
+  });
+
+  it('DEVICE_ONLINE sets deviceOnline=true', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+    expect(result.current.deviceOnline).toBe(false);
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-online', { device_id: 'dev-1' });
+    });
+
+    expect(result.current.deviceOnline).toBe(true);
+    expect(result.current.deviceId).toBe('dev-1');
+  });
+
+  it('DEVICE_OFFLINE sets deviceOnline=false and clears weight/rawAdc', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    // First get some weight data
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-weight', {
+        weight_grams: 500,
+        stable: true,
+        raw_adc: 54321,
+        device_id: 'dev-1',
+      });
+    });
+    expect(result.current.weight).toBe(500);
+    expect(result.current.rawAdc).toBe(54321);
+    expect(result.current.deviceOnline).toBe(true);
+
+    // Go offline
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-offline', { device_id: 'dev-1' });
+    });
+
+    expect(result.current.deviceOnline).toBe(false);
+    expect(result.current.weight).toBeNull();
+    expect(result.current.weightStable).toBe(false);
+    expect(result.current.rawAdc).toBeNull();
+  });
+
+  it('computes remainingWeight from matchedSpool', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', {
+        tag_uid: 'AA:BB:CC',
+        device_id: 'dev-1',
+        spool: {
+          id: 1,
+          material: 'PLA',
+          label_weight: 1000,
+          core_weight: 250,
+          weight_used: 300,
+        },
+      });
+    });
+
+    // remainingWeight = label_weight - weight_used = 1000 - 300 = 700
+    expect(result.current.remainingWeight).toBe(700);
+  });
+
+  it('remainingWeight is clamped to 0 when weight_used exceeds label_weight', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', {
+        tag_uid: 'AA:BB:CC',
+        device_id: 'dev-1',
+        spool: {
+          id: 1,
+          material: 'PLA',
+          label_weight: 1000,
+          core_weight: 250,
+          weight_used: 1200,
+        },
+      });
+    });
+
+    expect(result.current.remainingWeight).toBe(0);
+  });
+
+  it('computes netWeight from weight and matchedSpool core_weight', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    // Set weight first
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-weight', {
+        weight_grams: 800,
+        stable: true,
+        raw_adc: 11111,
+        device_id: 'dev-1',
+      });
+    });
+
+    // Match a spool
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', {
+        tag_uid: 'AA:BB:CC',
+        device_id: 'dev-1',
+        spool: {
+          id: 1,
+          material: 'PLA',
+          label_weight: 1000,
+          core_weight: 250,
+          weight_used: 0,
+        },
+      });
+    });
+
+    // netWeight = weight - core_weight = 800 - 250 = 550
+    expect(result.current.netWeight).toBe(550);
+  });
+
+  it('netWeight is null when weight is null', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-tag-matched', {
+        tag_uid: 'AA:BB:CC',
+        device_id: 'dev-1',
+        spool: {
+          id: 1,
+          material: 'PLA',
+          label_weight: 1000,
+          core_weight: 250,
+          weight_used: 0,
+        },
+      });
+    });
+
+    expect(result.current.netWeight).toBeNull();
+  });
+
+  it('netWeight is null when no matchedSpool', () => {
+    const { result } = renderHook(() => useSpoolBuddyState());
+
+    act(() => {
+      dispatchCustomEvent('spoolbuddy-weight', {
+        weight_grams: 800,
+        stable: true,
+        raw_adc: 11111,
+        device_id: 'dev-1',
+      });
+    });
+
+    expect(result.current.netWeight).toBeNull();
+  });
+
+  it('cleans up event listeners on unmount', () => {
+    const removeSpy = vi.spyOn(window, 'removeEventListener');
+    const { unmount } = renderHook(() => useSpoolBuddyState());
+
+    unmount();
+
+    const removedEvents = removeSpy.mock.calls.map((c) => c[0]);
+    expect(removedEvents).toContain('spoolbuddy-weight');
+    expect(removedEvents).toContain('spoolbuddy-tag-matched');
+    expect(removedEvents).toContain('spoolbuddy-unknown-tag');
+    expect(removedEvents).toContain('spoolbuddy-tag-removed');
+    expect(removedEvents).toContain('spoolbuddy-online');
+    expect(removedEvents).toContain('spoolbuddy-offline');
+  });
+
+  describe('with the kiosk device given (#3504)', () => {
+    it("ignores another device's weight, tags and online state", () => {
+      const { result } = renderHook(() => useSpoolBuddyState('kiosk'));
+
+      act(() => {
+        dispatchCustomEvent('spoolbuddy-weight', { weight_grams: 999, stable: true, device_id: 'other' });
+        dispatchCustomEvent('spoolbuddy-unknown-tag', { tag_uid: 'AABB', device_id: 'other' });
+        dispatchCustomEvent('spoolbuddy-online', { device_id: 'other' });
+      });
+
+      expect(result.current.weight).toBeNull();
+      expect(result.current.unknownTagUid).toBeNull();
+      expect(result.current.deviceOnline).toBe(false);
+    });
+
+    it("follows its own device's events", () => {
+      const { result } = renderHook(() => useSpoolBuddyState('kiosk'));
+
+      act(() => {
+        dispatchCustomEvent('spoolbuddy-weight', { weight_grams: 250, stable: true, device_id: 'kiosk' });
+      });
+
+      expect(result.current.weight).toBe(250);
+      expect(result.current.deviceId).toBe('kiosk');
+    });
+
+    it("keeps its own reading when another device's event arrives", () => {
+      const { result } = renderHook(() => useSpoolBuddyState('kiosk'));
+
+      act(() => {
+        dispatchCustomEvent('spoolbuddy-weight', { weight_grams: 250, stable: true, device_id: 'kiosk' });
+        dispatchCustomEvent('spoolbuddy-weight', { weight_grams: 999, stable: true, device_id: 'other' });
+      });
+
+      expect(result.current.weight).toBe(250);
+      expect(result.current.deviceOnline).toBe(true);
+    });
+
+    it('drops what another device left once the kiosk device is known', () => {
+      const { result, rerender } = renderHook(({ id }) => useSpoolBuddyState(id), {
+        initialProps: { id: undefined as string | undefined },
+      });
+      act(() => {
+        dispatchCustomEvent('spoolbuddy-weight', { weight_grams: 999, stable: true, device_id: 'other' });
+      });
+      expect(result.current.weight).toBe(999);
+
+      rerender({ id: 'kiosk' });
+
+      expect(result.current.weight).toBeNull();
+    });
+  });
+});

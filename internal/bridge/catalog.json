@@ -1,0 +1,895 @@
+[
+  {
+    "name": "list_printers",
+    "category": "printers",
+    "method": "GET",
+    "path": "/api/v1/printers/",
+    "description": "List visible printers",
+    "query": [],
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "get_printer_status",
+    "category": "printers",
+    "method": "GET",
+    "path": "/api/v1/printers/{printer_id}/status",
+    "description": "Read current printer status",
+    "query": [],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "printer_id": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "printer_id"
+      ]
+    }
+  },
+  {
+    "name": "camera_snapshot",
+    "category": "printers",
+    "method": "GET",
+    "path": "/api/v1/printers/{printer_id}/camera/snapshot",
+    "description": "Capture one current camera image",
+    "query": [
+      "token"
+    ],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "printer_id": {
+          "type": "integer"
+        },
+        "token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "printer_id"
+      ]
+    }
+  },
+  {
+    "name": "pause_print",
+    "category": "printers",
+    "method": "POST",
+    "path": "/api/v1/printers/{printer_id}/print/pause",
+    "description": "Request a pause of the active print",
+    "query": [],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "printer_id": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "printer_id"
+      ]
+    }
+  },
+  {
+    "name": "resume_print",
+    "category": "printers",
+    "method": "POST",
+    "path": "/api/v1/printers/{printer_id}/print/resume",
+    "description": "Resume a paused physical run",
+    "query": [],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "printer_id": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "printer_id"
+      ]
+    }
+  },
+  {
+    "name": "search_archives",
+    "category": "archives",
+    "method": "GET",
+    "path": "/api/v1/archives/search",
+    "description": "Search visible print archives",
+    "query": [
+      "q",
+      "printer_id",
+      "project_id",
+      "status",
+      "limit",
+      "offset"
+    ],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "q": {
+          "type": "string",
+          "minLength": 2
+        },
+        "printer_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "default": 50
+        },
+        "offset": {
+          "type": "integer",
+          "default": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "q"
+      ]
+    }
+  },
+  {
+    "name": "list_archive_plates",
+    "category": "archives",
+    "method": "GET",
+    "path": "/api/v1/archives/{archive_id}/plates",
+    "description": "Inspect the plates in an archive",
+    "query": [],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "archive_id": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "archive_id"
+      ]
+    }
+  },
+  {
+    "name": "list_queue",
+    "category": "queue",
+    "method": "GET",
+    "path": "/api/v1/queue/",
+    "description": "List queued requests and holds",
+    "query": [
+      "printer_id",
+      "status",
+      "target_model"
+    ],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "printer_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "target_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "get_queue_item",
+    "category": "queue",
+    "method": "GET",
+    "path": "/api/v1/queue/{item_id}",
+    "description": "Look up an existing request",
+    "query": [],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "item_id"
+      ]
+    }
+  },
+  {
+    "name": "submit_queue_item",
+    "category": "queue",
+    "method": "POST",
+    "path": "/api/v1/queue/",
+    "description": "Submit one or more copies of a selected plate",
+    "query": [],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "printer_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "target_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "target_location": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "required_filament_types": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "filament_overrides": {
+          "anyOf": [
+            {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "archive_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "library_file_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scheduled_time": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "require_previous_success": {
+          "type": "boolean",
+          "default": false
+        },
+        "auto_off_after": {
+          "type": "boolean",
+          "default": false
+        },
+        "manual_start": {
+          "type": "boolean",
+          "default": false
+        },
+        "insert_at_top": {
+          "type": "boolean",
+          "default": false
+        },
+        "insert_position": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skip_filament_check": {
+          "type": "boolean",
+          "default": false
+        },
+        "ams_mapping": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plate_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bed_levelling": {
+          "type": "string",
+          "enum": [
+            "off",
+            "on",
+            "auto"
+          ],
+          "default": "auto"
+        },
+        "flow_cali": {
+          "type": "string",
+          "enum": [
+            "off",
+            "on",
+            "auto"
+          ],
+          "default": "auto"
+        },
+        "vibration_cali": {
+          "type": "boolean",
+          "default": true
+        },
+        "layer_inspect": {
+          "type": "boolean",
+          "default": false
+        },
+        "timelapse": {
+          "type": "boolean",
+          "default": false
+        },
+        "use_ams": {
+          "type": "boolean",
+          "default": true
+        },
+        "nozzle_offset_cali": {
+          "type": "string",
+          "enum": [
+            "off",
+            "on",
+            "auto"
+          ],
+          "default": "auto"
+        },
+        "confirm_outcome": {
+          "type": "boolean",
+          "default": false
+        },
+        "preheat_override": {
+          "type": "string",
+          "enum": [
+            "inherit",
+            "on",
+            "off"
+          ],
+          "default": "inherit"
+        },
+        "preheat_chamber_target_override": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "maximum": 65.0,
+              "minimum": 0.0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gcode_injection": {
+          "type": "boolean",
+          "default": false
+        },
+        "quantity": {
+          "type": "integer",
+          "default": 1
+        },
+        "batch_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cost_center_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "estimated_cost": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nozzle_rack_choice": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "integer"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cleanup_library_after_dispatch": {
+          "type": "boolean",
+          "default": false
+        },
+        "variants": {
+          "anyOf": [
+            {
+              "items": {
+                "properties": {
+                  "library_file_id": {
+                    "type": "integer"
+                  },
+                  "target_model": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "plate_id": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "ams_mapping": {
+                    "anyOf": [
+                      {
+                        "items": {
+                          "type": "integer"
+                        },
+                        "type": "array"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "nozzle_mapping": {
+                    "anyOf": [
+                      {
+                        "items": {
+                          "type": "integer"
+                        },
+                        "type": "array"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "nozzle_rack_choice": {
+                    "anyOf": [
+                      {
+                        "additionalProperties": {
+                          "type": "integer"
+                        },
+                        "type": "object"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "filament_overrides": {
+                    "anyOf": [
+                      {
+                        "items": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "type": "object",
+                "required": [
+                  "library_file_id"
+                ]
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "request_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "start_queue_item",
+    "category": "queue",
+    "method": "POST",
+    "path": "/api/v1/queue/{item_id}/start",
+    "description": "Release a pending request if permitted",
+    "query": [
+      "skip_filament_check"
+    ],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "integer"
+        },
+        "skip_filament_check": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "item_id"
+      ]
+    }
+  },
+  {
+    "name": "list_runs",
+    "category": "archives",
+    "method": "GET",
+    "path": "/api/v1/print-log/",
+    "description": "Read physical print history",
+    "query": [
+      "search",
+      "printer_id",
+      "created_by_username",
+      "status",
+      "date_from",
+      "date_to",
+      "limit",
+      "offset",
+      "sort_by",
+      "sort_dir"
+    ],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "search": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "printer_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_by_username": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "date_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "date_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "maximum": 500,
+          "minimum": 1,
+          "default": 50
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "sort_by": {
+          "type": "string",
+          "default": "date"
+        },
+        "sort_dir": {
+          "type": "string",
+          "pattern": "^(asc|desc)$",
+          "default": "desc"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "list_spools",
+    "category": "materials",
+    "method": "GET",
+    "path": "/api/v1/inventory/spools",
+    "description": "Read native inventory",
+    "query": [
+      "include_archived"
+    ],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "include_archived": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "list_projects",
+    "category": "projects",
+    "method": "GET",
+    "path": "/api/v1/projects/",
+    "description": "List projects",
+    "query": [
+      "status"
+    ],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "get_project",
+    "category": "projects",
+    "method": "GET",
+    "path": "/api/v1/projects/{project_id}",
+    "description": "Read a project",
+    "query": [],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "project_id"
+      ]
+    }
+  },
+  {
+    "name": "list_batches",
+    "category": "queue",
+    "method": "GET",
+    "path": "/api/v1/queue/batches",
+    "description": "List production batches",
+    "query": [
+      "status",
+      "external_source",
+      "external_ref"
+    ],
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "external_source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "external_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+]

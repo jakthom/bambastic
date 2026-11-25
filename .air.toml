@@ -1,0 +1,11 @@
+root = "."
+tmp_dir = "bin/dev"
+
+[build]
+cmd = "go build -tags dev -o ./bin/dev/bambastic ."
+entrypoint = ["./bin/dev/bambastic", "serve"]
+include_ext = ["go", "mod", "sum", "json", "sql", "ttf"]
+exclude_dir = [".git", "bin", "cmd", "data", "frontend", "tools"]
+exclude_regex = ["_test\\.go$"]
+send_interrupt = true
+kill_delay = "10s"

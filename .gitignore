@@ -1,0 +1,6 @@
+/data/
+/bin/
+/frontend/node_modules/
+/frontend/.cache/
+*.tsbuildinfo
+.DS_Store

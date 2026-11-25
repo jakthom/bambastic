@@ -1,0 +1,756 @@
+@import "tailwindcss";
+
+/* Inter, self-hosted (#1460).  Bambuddy is a local-first, offline-capable PWA;
+   pulling the font from fonts.googleapis.com at runtime broke the install on
+   Android (CSP-blocked cross-origin fetch) and meant the UI couldn't render
+   offline.  These are the variable woff2 files Google Fonts serves — one file
+   covers every weight via the variable axis, so font-weight is a 100-900 range.
+   Files live in frontend/public/fonts/ and are served same-origin. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Enable class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Hover-capable pointer only (#2865).  Tailwind v4 compiles `hover:` AND
+   `group-hover:` inside `@media (hover: hover)`, so on a touch-only device the
+   reveal rule is never applied at all — a control written as
+   `opacity-0 group-hover:opacity-100` stays invisible forever, which is how the
+   project card's action menu became unreachable on a phone.  Gating the HIDING
+   half on this variant is what fixes it: with no hover-capable pointer the
+   element simply keeps its natural opacity.  Same query the history thumbnail
+   preview already uses further down. */
+@custom-variant can-hover (@media (hover: hover) and (pointer: fine));
+
+/* Restore the pointer cursor on interactive controls (#2791).  Tailwind v3's
+   Preflight set `button { cursor: pointer }`; v4 dropped it to match the
+   browser default of `cursor: default`, so every button in the app looked
+   unclickable unless someone remembered to add `cursor-pointer` by hand.
+   Only a handful of the ~930 buttons did, which is why the UI felt
+   inconsistent rather than uniformly wrong.
+
+   This lives in `base`, the lowest of Tailwind's cascade layers, so the
+   `cursor-not-allowed` / `disabled:cursor-*` utilities dotted around the
+   codebase still win.  The `:not(:disabled)` guard covers the elements that
+   are disabled without also carrying such a utility. */
+@layer base {
+  button:not(:disabled),
+  select:not(:disabled),
+  summary,
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
+  /* A control's label is not text to copy (#3577). On a phone or tablet a
+     tap that lasted a little long or moved a little selected the label, with
+     handles and the copy menu, instead of pressing the control; iOS also
+     offered its long-press menu on it. Most buttons are plain <button>s, so
+     the rule lives here rather than at each one. */
+  button,
+  [role="button"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* A field inside a button-like row (a Collapsible header) stays a field:
+     iOS Safari won't let a field under user-select: none be typed in. */
+  [role="button"] :is(input, textarea, [contenteditable="true"]) {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+@theme {
+  /* Accent colors - use CSS variables for theming */
+  --color-bambu-green: var(--accent);
+  --color-bambu-green-light: var(--accent-light);
+  --color-bambu-green-dark: var(--accent-dark);
+
+  /* Semantic status colors - fixed, don't change with accent */
+  --color-status-ok: var(--status-ok);
+  --color-status-error: var(--status-error);
+  --color-status-warning: var(--status-warning);
+
+  /* Theme-aware colors via CSS variables */
+  --color-bambu-dark: var(--bg-primary);
+  --color-bambu-dark-secondary: var(--bg-secondary);
+  --color-bambu-dark-tertiary: var(--bg-tertiary);
+  --color-bambu-gray: var(--text-muted);
+  --color-bambu-gray-light: var(--text-secondary);
+  --color-bambu-gray-dark: var(--text-tertiary);
+}
+
+/* ============================================
+   BASE DEFAULTS
+   ============================================ */
+
+html {
+  font-size: 14.4px;
+}
+
+:root {
+  /* Semantic status colors - these never change with accent theme */
+  --status-ok: #22c55e;      /* green-500 - always green for success/online/ok */
+  --status-error: #ef4444;   /* red-500 - always red for error/offline/failed */
+  --status-warning: #f59e0b; /* amber-500 - always amber for warnings */
+
+  --selection-bg: #d6f5f2;
+  --selection-ink: #005f63;
+  --focus-color: #007d85;
+  --control-outline: #5d7e91;
+  --button-label: #ffffff;
+
+  /* Default style (classic) */
+  --card-shadow: 0 1px 3px rgb(16 44 67 / .04);
+  --glow-color: transparent;
+
+  /* Tell the browser which appearance the page is in, so the parts of a form
+     control it draws itself follow the theme.  Bambuddy themes by
+     swapping CSS variables under a `.dark` class, which the browser cannot
+     see: without this declaration it assumes light and paints every native
+     widget internal that way -- number-input steppers, the date picker's
+     calendar button and its popup, `<select>` dropdowns, scrollbars, the
+     autofill highlight.  That is why the quantity steppers in the print
+     dialog were pale grey chips inside a dark field.  Only the widget
+     internals are affected; anything we set ourselves still wins. */
+  color-scheme: light;
+
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark mode base */
+.dark {
+  /* Pairs with `color-scheme: light` on :root -- see the note there.  This
+     sits on `.dark` rather than on each `.dark.bg-*` palette because the
+     kiosk adds `dark` to <html> on its own (SpoolBuddyLayout), and every
+     palette is a dark one regardless of which background it picks. */
+  color-scheme: dark;
+
+  --selection-bg: #103c44;
+  --selection-ink: #78ece3;
+  --focus-color: #53dad2;
+  --control-outline: #7ca2b7;
+  --button-label: #092237;
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================
+   LAYER 1: BACKGROUND PALETTES
+   ============================================ */
+
+/* Light mode backgrounds */
+:root,
+.bg-cool {
+  --bg-primary: #f1f7fb;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e0eaf0;
+  --text-primary: #102c43;
+  --text-secondary: #2a4b61;
+  --text-muted: #48647a;
+  --text-tertiary: #4d6577;
+  --border-color: #c8d8e2;
+}
+
+.bg-neutral {
+  --bg-primary: #f5f5f5;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e5e5e5;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-muted: #6b6b6b;
+  --text-tertiary: #808080;
+  --border-color: #d4d4d4;
+}
+
+.bg-warm {
+  --bg-primary: #faf8f5;
+  --bg-secondary: #fffefa;
+  --bg-tertiary: #e8e4dd;
+  --text-primary: #2d2a26;
+  --text-secondary: #5c5750;
+  --text-muted: #7a756c;
+  --text-tertiary: #9a9590;
+  --border-color: #d8d4cc;
+}
+
+/* Dark mode backgrounds */
+.dark,
+.dark.bg-cool {
+  --bg-primary: #0a2030;
+  --bg-secondary: #102c40;
+  --bg-tertiary: #1f4158;
+  --text-primary: #eaf6fc;
+  --text-secondary: #c2d9e5;
+  --text-muted: #aec6d5;
+  --text-tertiary: #91aebb;
+  --border-color: #365367;
+}
+
+.dark.bg-neutral {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #3d3d3d;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #808080;
+  --text-tertiary: #4a4a4a;
+  --border-color: #3d3d3d;
+}
+
+.dark.bg-warm {
+  --bg-primary: #1c1a18;
+  --bg-secondary: #2e2a26;
+  --bg-tertiary: #3e3a36;
+  --text-primary: #f5f0ea;
+  --text-secondary: #b0a898;
+  --text-muted: #8a8278;
+  --text-tertiary: #5a5248;
+  --border-color: #3e3a36;
+}
+
+.dark.bg-oled {
+  --bg-primary: #000000;
+  --bg-secondary: #141414;
+  --bg-tertiary: #1f1f1f;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+  --text-tertiary: #404040;
+  --border-color: #2a2a2a;
+}
+
+.dark.bg-slate {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-tertiary: #475569;
+  --border-color: #334155;
+}
+
+.dark.bg-forest {
+  --bg-primary: #121a16;
+  --bg-secondary: #1c2a22;
+  --bg-tertiary: #2a3d30;
+  --text-primary: #e8f5ec;
+  --text-secondary: #8aa894;
+  --text-muted: #6a8874;
+  --text-tertiary: #4a6854;
+  --border-color: #2a3d30;
+}
+
+/* Printer card control buttons: stack only when they clip */
+.printer-control-buttons-container {
+  container-type: inline-size;
+}
+
+@container (max-width: 220px) {
+  .printer-control-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .printer-control-buttons > button {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   LAYER 2: STYLE EFFECTS
+   ============================================ */
+
+/* Classic - default, clean minimal shadows */
+.style-classic {
+  /* Uses default shadows from :root and .dark */
+}
+
+/* Glow - accent-colored glow effects on cards */
+.style-glow {
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 25px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.dark.style-glow {
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 40px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+/* Vibrant - dramatic deep shadows, more contrast */
+.style-vibrant {
+  --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark.style-vibrant {
+  --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================
+   LAYER 3: ACCENT COLORS
+   ============================================ */
+
+/* The same accent is used for links and filled actions. Light palettes use
+   deep hues with white button labels, dark palettes use tints with navy ink. */
+:root,
+.accent-blue {
+  --accent: #075a99;
+  --accent-light: #064c82;
+  --accent-dark: #043c67;
+}
+
+.accent-green {
+  --accent: #126030;
+  --accent-light: #0d5027;
+  --accent-dark: #0b4221;
+}
+
+.accent-teal {
+  --accent: #006064;
+  --accent-light: #005255;
+  --accent-dark: #004346;
+}
+
+.accent-orange {
+  --accent: #8b3a09;
+  --accent-light: #773008;
+  --accent-dark: #642707;
+}
+
+.accent-purple {
+  --accent: #6636a1;
+  --accent-light: #572b8b;
+  --accent-dark: #492372;
+}
+
+.accent-red {
+  --accent: #a12337;
+  --accent-light: #8a1c2e;
+  --accent-dark: #721627;
+}
+
+.dark,
+.dark.accent-blue {
+  --accent: #78c6ff;
+  --accent-light: #a1d7ff;
+  --accent-dark: #5eb7f6;
+}
+
+.dark.accent-green {
+  --accent: #6bd496;
+  --accent-light: #93e4b4;
+  --accent-dark: #51c483;
+}
+
+.dark.accent-teal {
+  --accent: #5bd5c4;
+  --accent-light: #88e6d9;
+  --accent-dark: #3bc3b0;
+}
+
+.dark.accent-orange {
+  --accent: #ffac79;
+  --accent-light: #ffc398;
+  --accent-dark: #f49961;
+}
+
+.dark.accent-purple {
+  --accent: #c8a4ff;
+  --accent-light: #dac0ff;
+  --accent-dark: #b88af6;
+}
+
+.dark.accent-red {
+  --accent: #ff9eaa;
+  --accent-light: #ffbec5;
+  --accent-dark: #fa8796;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  margin: 0;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Override text-white to be theme-aware */
+.text-white {
+  color: var(--text-primary);
+}
+
+/* Same, for the hover variant (#1909).  Tailwind compiles `hover:text-white`
+   to `.hover\:text-white:hover`, a different selector the rule above never
+   matches -- so every one of the ~400 `text-bambu-gray hover:text-white`
+   controls turned literally white on hover and vanished against the light
+   theme's background.  Unlayered, like the rule above, so it outranks
+   Tailwind's `@layer utilities` output. */
+.hover\:text-white:hover {
+  color: var(--text-primary);
+}
+
+/* Smooth transitions for theme changes */
+.bg-bambu-dark,
+.bg-bambu-dark-secondary,
+.bg-bambu-dark-tertiary,
+.border-bambu-dark-tertiary {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Toast slide-in animation */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.2s ease-out;
+}
+
+/* Theme-aware icon inversion - only invert in dark mode */
+.icon-theme {
+  opacity: 0.5;
+}
+
+.dark .icon-theme {
+  filter: invert(1);
+  opacity: 0.4;
+}
+
+/* Green-colored icon for active status indicators */
+.icon-green {
+  filter: invert(48%) sepia(89%) saturate(459%) hue-rotate(93deg) brightness(95%) contrast(92%);
+  opacity: 1;
+}
+
+/* Orange/red-colored icon for heating indicators */
+.icon-heating {
+  filter: invert(50%) sepia(100%) saturate(1000%) hue-rotate(360deg) brightness(100%) contrast(100%);
+  opacity: 1;
+}
+
+/* Jogpad theme styling - darken background in dark mode */
+.jogpad-theme {
+  /* Light mode - normal */
+}
+
+.dark .jogpad-theme {
+  filter: brightness(0.35) contrast(1.2);
+}
+
+/* Empty AMS slot with diagonal stripes */
+.ams-empty-slot {
+  background: repeating-linear-gradient(
+    45deg,
+    #444,
+    #444 2px,
+    #222 2px,
+    #222 4px
+  );
+}
+
+.dark .ams-empty-slot {
+  background: repeating-linear-gradient(
+    45deg,
+    #555,
+    #555 2px,
+    #333 2px,
+    #333 4px
+  );
+}
+
+/* Touch manipulation to prevent zoom on double-tap */
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+/* Safe area insets for notched devices */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile drawer animation */
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+/* SpoolBuddy idle scan animation: transform/opacity only for low-power devices */
+@keyframes spoolbuddy-optimized-ping {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  80%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.spoolbuddy-optimized-ping {
+  will-change: auto;
+  contain: layout;
+  animation: spoolbuddy-optimized-ping 3.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.spoolbuddy-spool-glow {
+  transform: scale(2.0);
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spoolbuddy-optimized-ping {
+    animation: none;
+    opacity: 0.25;
+    transform: scale(1.2);
+  }
+
+  .spoolbuddy-spool-glow {
+    transition: none;
+  }
+}
+
+/* SpoolBuddy quick menu slide-down */
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.25s ease-out;
+}
+
+/* Card shadows - uses theme-specific shadow */
+.card-shadow {
+  box-shadow: var(--card-shadow);
+}
+
+/* ============================================
+   SPOOLBUDDY KIOSK MODAL CONSTRAINTS
+   Cap large modals (max-w-2xl) to viewport on the
+   small SpoolBuddy touchscreen. Excludes smaller
+   modals like the slot action picker (max-w-sm).
+   ============================================ */
+[data-spoolbuddy-kiosk] .fixed .relative.max-w-2xl {
+  height: 90vh;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-spoolbuddy-kiosk] .fixed .relative.max-w-2xl > div:first-child {
+  flex-shrink: 0;
+}
+
+[data-spoolbuddy-kiosk] .fixed .relative.max-w-2xl > div:last-child {
+  flex-shrink: 0;
+}
+
+[data-spoolbuddy-kiosk] .fixed .relative.max-w-2xl > div:nth-child(2) {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Remove inner spool grid max-height to avoid nested scrollbars */
+[data-spoolbuddy-kiosk] .fixed .relative.max-w-2xl .max-h-96 {
+  max-height: none;
+}
+
+/* Calendar selected-day list scrollbar theming */
+.calendar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 60%, transparent) transparent;
+}
+
+.calendar-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.calendar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.calendar-scroll::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--text-muted) 60%, transparent);
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--bg-secondary) 70%, transparent);
+}
+
+.calendar-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--text-muted) 80%, transparent);
+}
+
+/* Per-slot filament colour swatch in the slice modal (#2977). A native
+   <input type="color"> paints its value inside a fixed inner padding and its
+   own border, so at 14px the colour reads as a dot inside a pale ring rather
+   than as the round swatch it replaced. These reset both so the element is
+   nothing but the colour. */
+.slice-colour-swatch {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  overflow: hidden;
+}
+
+.slice-colour-swatch::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.slice-colour-swatch::-webkit-color-swatch {
+  border: none;
+  border-radius: 999px;
+}
+
+.slice-colour-swatch::-moz-color-swatch {
+  border: none;
+  border-radius: 999px;
+}
+
+.button-primary,
+.bg-bambu-green,
+.peer:checked ~ .peer-checked\:bg-bambu-green {
+  color: var(--button-label);
+}
+
+@media (hover: hover) {
+  .hover\:bg-bambu-green:hover {
+    color: var(--button-label);
+  }
+}
+
+.brand-wordmark {
+  display: block;
+  width: 11.5rem;
+  height: auto;
+  max-width: 100%;
+  color: var(--text-primary);
+}
+.brand-wordmark--auth {
+  width: 17rem;
+}
+.brand-mark {
+  display: block;
+  width: 2.4rem;
+  height: 2.4rem;
+  object-fit: contain;
+}
+.sidebar-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding-block: .65rem;
+  border-radius: .5rem;
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.sidebar-link--with-action {
+  padding-inline-end: 3rem;
+}
+@media (hover: hover) {
+  .sidebar-link:not([aria-current="page"]):hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
+.sidebar-link[aria-current="page"] {
+  color: var(--selection-ink);
+  background-color: var(--selection-bg);
+  font-weight: 650;
+}
+.sidebar-link[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  height: 1.35rem;
+  border-inline-start: 3px solid currentColor;
+}
+.sidebar-camera-selected {
+  color: var(--selection-ink);
+}
+.sidebar-camera-selected:hover, .sidebar-camera-selected[aria-expanded="true"] {
+  color: var(--selection-bg);
+  background-color: var(--selection-ink);
+}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 3px;
+}
+
+.fleet-empty-state {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(24%, 7rem);
+  align-items: center;
+  gap: clamp(.75rem, 2vw, 1.75rem);
+  padding: clamp(1rem, 2.5vw, 2rem);
+}
+.fleet-empty-state img {
+  width: 100%;
+  height: auto;
+}
+.fleet-empty-state h2 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 650;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}

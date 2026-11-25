@@ -1,0 +1,222 @@
+{
+  "printers:read": [
+    "can_read_status"
+  ],
+  "archives:read": [
+    "can_read_status"
+  ],
+  "archives:read_own": [
+    "can_read_status"
+  ],
+  "archives:read_all": [
+    "can_read_status"
+  ],
+  "queue:read": [
+    "can_read_status"
+  ],
+  "queue:read_own": [
+    "can_read_status"
+  ],
+  "queue:read_all": [
+    "can_read_status"
+  ],
+  "library:read": [
+    "can_read_status"
+  ],
+  "library:read_own": [
+    "can_read_status"
+  ],
+  "library:read_all": [
+    "can_read_status"
+  ],
+  "projects:read": [
+    "can_read_status"
+  ],
+  "filaments:read": [
+    "can_read_status"
+  ],
+  "inventory:read": [
+    "can_read_status"
+  ],
+  "inventory:view_assignments": [
+    "can_read_status"
+  ],
+  "inventory:forecast_read": [
+    "can_read_status"
+  ],
+  "smart_plugs:read": [
+    "can_read_status"
+  ],
+  "camera:view": [
+    "can_read_status"
+  ],
+  "maintenance:read": [
+    "can_read_status"
+  ],
+  "kprofiles:read": [
+    "can_read_status"
+  ],
+  "notifications:read": [
+    "can_read_status"
+  ],
+  "notification_templates:read": [
+    "can_read_status"
+  ],
+  "external_links:read": [
+    "can_read_status"
+  ],
+  "firmware:read": [
+    "can_read_status"
+  ],
+  "ams_history:read": [
+    "can_read_status"
+  ],
+  "printer_sensor_history:read": [
+    "can_read_status"
+  ],
+  "stats:read": [
+    "can_read_status"
+  ],
+  "stats:filter_by_user": [
+    "can_read_status"
+  ],
+  "users:read_slim": [
+    "can_read_status"
+  ],
+  "system:read": [
+    "can_read_status"
+  ],
+  "settings:read": [
+    "can_read_status"
+  ],
+  "makerworld:view": [
+    "can_read_status"
+  ],
+  "manyfold:view": [
+    "can_read_status"
+  ],
+  "pipelines:read": [
+    "can_read_status"
+  ],
+  "websocket:connect": [
+    "can_read_status"
+  ],
+  "queue:create": [
+    "can_queue"
+  ],
+  "queue:update_own": [
+    "can_queue"
+  ],
+  "queue:update_all": [
+    "can_queue"
+  ],
+  "queue:delete_own": [
+    "can_queue"
+  ],
+  "queue:delete_all": [
+    "can_queue"
+  ],
+  "queue:reorder": [
+    "can_queue"
+  ],
+  "queue:start_unreviewed": [
+    "can_queue"
+  ],
+  "archives:reprint_own": [
+    "can_queue"
+  ],
+  "archives:reprint_all": [
+    "can_queue"
+  ],
+  "printers:control": [
+    "can_control_printer"
+  ],
+  "printers:files": [
+    "can_control_printer"
+  ],
+  "printers:ams_rfid": [
+    "can_control_printer"
+  ],
+  "printers:clear_plate": [
+    "can_control_printer"
+  ],
+  "smart_plugs:control": [
+    "can_control_printer"
+  ],
+  "library:upload": [
+    "can_manage_library"
+  ],
+  "library:update_own": [
+    "can_manage_library"
+  ],
+  "library:update_all": [
+    "can_manage_library"
+  ],
+  "library:delete_own": [
+    "can_manage_library"
+  ],
+  "library:delete_all": [
+    "can_manage_library"
+  ],
+  "makerworld:import": [
+    "can_manage_library"
+  ],
+  "manyfold:import": [
+    "can_manage_library"
+  ],
+  "inventory:create": [
+    "can_manage_inventory"
+  ],
+  "inventory:update": [
+    "can_manage_inventory"
+  ],
+  "inventory:delete": [
+    "can_manage_inventory"
+  ],
+  "inventory:forecast_write": [
+    "can_manage_inventory"
+  ],
+  "maintenance:create": [
+    "can_manage_maintenance"
+  ],
+  "maintenance:update": [
+    "can_manage_maintenance"
+  ],
+  "maintenance:delete": [
+    "can_manage_maintenance"
+  ],
+  "archives:create": [
+    "can_manage_archives"
+  ],
+  "archives:update_own": [
+    "can_manage_archives"
+  ],
+  "archives:update_all": [
+    "can_manage_archives"
+  ],
+  "archives:delete_own": [
+    "can_manage_archives"
+  ],
+  "archives:delete_all": [
+    "can_manage_archives"
+  ],
+  "projects:create": [
+    "can_manage_projects"
+  ],
+  "projects:update": [
+    "can_manage_projects"
+  ],
+  "projects:delete": [
+    "can_manage_projects"
+  ],
+  "pipelines:run": [
+    "can_queue",
+    "can_manage_library"
+  ],
+  "cloud:auth": [
+    "can_access_cloud"
+  ],
+  "orca_cloud:auth": [
+    "can_access_cloud"
+  ]
+}

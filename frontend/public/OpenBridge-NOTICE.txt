@@ -1,0 +1,19 @@
+@openships/openbridge-icons
+Copyright 2026 Open Ships
+
+This product includes icon artwork from the OpenBridge Design System's
+"OpenBridge Icon Pack (Community)", created by the Ocean Industries Concept
+Lab at the Oslo School of Architecture and Design and OpenBridge contributors.
+
+OpenBridge: https://www.openbridge.no/
+OpenBridge source: https://github.com/Ocean-Industries-Concept-Lab/openbridge-webcomponents
+
+The upstream OpenBridge work is distributed under the Apache License, Version
+2.0. Some source filenames identify artwork derived from Google Material
+Icons; those files retain their upstream names and are also distributed under
+the Apache License, Version 2.0.
+
+Open Ships modifications include deterministic filename normalization, SVG
+safety validation and optimization, collision-safe internal ID prefixes,
+metadata generation, and optional currentColor variants. Exact source archive
+provenance is recorded in dist/manifest.json.

@@ -1,0 +1,2319 @@
+{
+ "AppSettings": {
+  "auto_archive": {
+   "type": "boolean",
+   "default": true
+  },
+  "save_thumbnails": {
+   "type": "boolean",
+   "default": true
+  },
+  "capture_finish_photo": {
+   "type": "boolean",
+   "default": true
+  },
+  "finish_photo_restore_plate": {
+   "type": "boolean",
+   "default": true
+  },
+  "default_filament_cost": {
+   "type": "number",
+   "default": 25.0
+  },
+  "currency": {
+   "type": "string",
+   "default": "USD"
+  },
+  "energy_cost_per_kwh": {
+   "type": "number",
+   "default": 0.15
+  },
+  "energy_tracking_mode": {
+   "type": "string",
+   "default": "total"
+  },
+  "energy_price_source": {
+   "type": "string",
+   "default": "fixed"
+  },
+  "energy_price_ha_entity": {
+   "type": "string",
+   "default": ""
+  },
+  "spoolman_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "spoolman_url": {
+   "type": "string",
+   "default": ""
+  },
+  "spoolman_sync_mode": {
+   "type": "string",
+   "default": "auto"
+  },
+  "spoolman_disable_weight_sync": {
+   "type": "boolean",
+   "default": false
+  },
+  "spoolman_report_partial_usage": {
+   "type": "boolean",
+   "default": true
+  },
+  "auto_add_unknown_rfid": {
+   "type": "boolean",
+   "default": true
+  },
+  "disable_filament_warnings": {
+   "type": "boolean",
+   "default": false
+  },
+  "prefer_lowest_filament": {
+   "type": "boolean",
+   "default": false
+  },
+  "check_updates": {
+   "type": "boolean",
+   "default": true
+  },
+  "check_printer_firmware": {
+   "type": "boolean",
+   "default": true
+  },
+  "include_beta_updates": {
+   "type": "boolean",
+   "default": false
+  },
+  "announcements_enabled": {
+   "type": "boolean",
+   "default": true
+  },
+  "announcements_all_users": {
+   "type": "boolean",
+   "default": false
+  },
+  "language": {
+   "type": "string",
+   "default": "en"
+  },
+  "notification_language": {
+   "type": "string",
+   "default": "en"
+  },
+  "bed_cooled_threshold": {
+   "type": "number",
+   "default": 35.0
+  },
+  "pause_warning_minutes": {
+   "type": "integer",
+   "default": 5
+  },
+  "ams_humidity_good": {
+   "type": "integer",
+   "default": 40
+  },
+  "ams_humidity_fair": {
+   "type": "integer",
+   "default": 60
+  },
+  "ams_temp_good": {
+   "type": "number",
+   "default": 28.0
+  },
+  "ams_temp_fair": {
+   "type": "number",
+   "default": 35.0
+  },
+  "ams_temp_alarm": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ams_history_retention_days": {
+   "type": "integer",
+   "default": 30
+  },
+  "printer_sensor_history_retention_days": {
+   "type": "integer",
+   "default": 30
+  },
+  "queue_drying_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "queue_drying_block": {
+   "type": "boolean",
+   "default": false
+  },
+  "ambient_drying_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "ambient_drying_sustained_minutes": {
+   "type": "integer",
+   "maximum": 240.0,
+   "minimum": 0.0,
+   "default": 0
+  },
+  "print_drying_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "drying_presets": {
+   "type": "string",
+   "default": ""
+  },
+  "ams_humidity_thresholds": {
+   "type": "string",
+   "default": ""
+  },
+  "gcode_snippets": {
+   "type": "string",
+   "default": ""
+  },
+  "local_backup_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "local_backup_schedule": {
+   "type": "string",
+   "default": "daily"
+  },
+  "local_backup_time": {
+   "type": "string",
+   "default": "03:00"
+  },
+  "local_backup_retention": {
+   "type": "integer",
+   "default": 5
+  },
+  "local_backup_path": {
+   "type": "string",
+   "default": ""
+  },
+  "per_printer_mapping_expanded": {
+   "type": "boolean",
+   "default": false
+  },
+  "date_format": {
+   "type": "string",
+   "default": "system"
+  },
+  "time_format": {
+   "type": "string",
+   "default": "system"
+  },
+  "default_printer_id": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "pipeline_max_copies": {
+   "type": "integer",
+   "maximum": 1000.0,
+   "minimum": 1.0,
+   "default": 50
+  },
+  "virtual_printer_archive_name_source": {
+   "type": "string",
+   "default": "metadata"
+  },
+  "dark_style": {
+   "type": "string",
+   "default": "vibrant"
+  },
+  "dark_background": {
+   "type": "string",
+   "default": "cool"
+  },
+  "dark_accent": {
+   "type": "string",
+   "default": "green"
+  },
+  "light_style": {
+   "type": "string",
+   "default": "classic"
+  },
+  "light_background": {
+   "type": "string",
+   "default": "neutral"
+  },
+  "light_accent": {
+   "type": "string",
+   "default": "green"
+  },
+  "ftp_retry_enabled": {
+   "type": "boolean",
+   "default": true
+  },
+  "ftp_retry_count": {
+   "type": "integer",
+   "default": 3
+  },
+  "ftp_retry_delay": {
+   "type": "integer",
+   "default": 2
+  },
+  "ftp_timeout": {
+   "type": "integer",
+   "default": 30
+  },
+  "mqtt_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "mqtt_broker": {
+   "type": "string",
+   "default": ""
+  },
+  "mqtt_port": {
+   "type": "integer",
+   "default": 1883
+  },
+  "mqtt_username": {
+   "type": "string",
+   "default": ""
+  },
+  "mqtt_password": {
+   "type": "string",
+   "default": ""
+  },
+  "mqtt_topic_prefix": {
+   "type": "string",
+   "default": "bambuddy"
+  },
+  "mqtt_use_tls": {
+   "type": "boolean",
+   "default": false
+  },
+  "external_url": {
+   "type": "string",
+   "default": ""
+  },
+  "docker_compose_dir": {
+   "type": "string",
+   "default": ""
+  },
+  "ha_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "ha_url": {
+   "type": "string",
+   "default": ""
+  },
+  "ha_token": {
+   "type": "string",
+   "default": ""
+  },
+  "ha_url_from_env": {
+   "type": "boolean",
+   "default": false
+  },
+  "ha_token_from_env": {
+   "type": "boolean",
+   "default": false
+  },
+  "ha_env_managed": {
+   "type": "boolean",
+   "default": false
+  },
+  "library_disk_warning_gb": {
+   "type": "number",
+   "default": 5.0
+  },
+  "camera_light_mode": {
+   "type": "string",
+   "default": "off"
+  },
+  "camera_light_delay": {
+   "type": "number",
+   "default": 2.0
+  },
+  "camera_view_mode": {
+   "type": "string",
+   "default": "window"
+  },
+  "preferred_slicer": {
+   "type": "string",
+   "default": "bambu_studio"
+  },
+  "open_in_slicer": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "slice_engine": {
+   "type": "string",
+   "default": "sidecar"
+  },
+  "use_slicer_api": {
+   "type": "boolean",
+   "default": false
+  },
+  "orcaslicer_api_url": {
+   "type": "string",
+   "default": ""
+  },
+  "bambu_studio_api_url": {
+   "type": "string",
+   "default": ""
+  },
+  "slicer_stall_timeout_minutes": {
+   "type": "integer",
+   "maximum": 240.0,
+   "minimum": 1.0,
+   "default": 15
+  },
+  "prometheus_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "prometheus_token": {
+   "type": "string",
+   "default": ""
+  },
+  "low_stock_threshold": {
+   "type": "number",
+   "maximum": 99.9,
+   "minimum": 0.1,
+   "default": 20.0
+  },
+  "session_max_hours": {
+   "type": "integer",
+   "maximum": 720.0,
+   "minimum": 1.0,
+   "default": 24
+  },
+  "user_notifications_enabled": {
+   "type": "boolean",
+   "default": true
+  },
+  "default_bed_levelling": {
+   "type": "string",
+   "enum": [
+    "off",
+    "on",
+    "auto"
+   ],
+   "default": "auto"
+  },
+  "default_flow_cali": {
+   "type": "string",
+   "enum": [
+    "off",
+    "on",
+    "auto"
+   ],
+   "default": "auto"
+  },
+  "default_vibration_cali": {
+   "type": "boolean",
+   "default": true
+  },
+  "default_layer_inspect": {
+   "type": "boolean",
+   "default": false
+  },
+  "default_timelapse": {
+   "type": "boolean",
+   "default": false
+  },
+  "default_nozzle_offset_cali": {
+   "type": "string",
+   "enum": [
+    "off",
+    "on",
+    "auto"
+   ],
+   "default": "auto"
+  },
+  "default_confirm_outcome": {
+   "type": "boolean",
+   "default": false
+  },
+  "confirm_outcome_external_prints": {
+   "type": "boolean",
+   "default": false
+  },
+  "confirm_default_good_on_plate_clear": {
+   "type": "boolean",
+   "default": false
+  },
+  "stagger_group_size": {
+   "type": "integer",
+   "maximum": 50.0,
+   "minimum": 1.0,
+   "default": 2
+  },
+  "stagger_interval_minutes": {
+   "type": "integer",
+   "maximum": 60.0,
+   "minimum": 1.0,
+   "default": 5
+  },
+  "billing_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "printer_kill_switch_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "finance_budget_reset_day": {
+   "type": "integer",
+   "maximum": 31.0,
+   "minimum": 1.0,
+   "default": 1
+  },
+  "finance_budget_reset_timezone": {
+   "type": "string",
+   "default": "UTC"
+  },
+  "require_plate_clear": {
+   "type": "boolean",
+   "default": false
+  },
+  "queue_shortest_first": {
+   "type": "boolean",
+   "default": false
+  },
+  "model_dispatch_order": {
+   "type": "string",
+   "enum": [
+    "fewest_hours",
+    "most_hours",
+    "least_recently_used",
+    "priority"
+   ],
+   "default": "fewest_hours"
+  },
+  "queue_max_concurrent_uploads": {
+   "type": "integer",
+   "maximum": 16.0,
+   "minimum": 1.0,
+   "default": 4
+  },
+  "preheat_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "preheat_filament_targets": {
+   "type": "string",
+   "default": ""
+  },
+  "preheat_max_wait_seconds": {
+   "type": "integer",
+   "maximum": 3600.0,
+   "minimum": 60.0,
+   "default": 900
+  },
+  "preheat_soak_seconds": {
+   "type": "integer",
+   "maximum": 1800.0,
+   "minimum": 0.0,
+   "default": 300
+  },
+  "queue_keep_bed_warm": {
+   "type": "boolean",
+   "default": false
+  },
+  "queue_keep_warm_bed_temp": {
+   "type": "integer",
+   "maximum": 110.0,
+   "minimum": 40.0,
+   "default": 90
+  },
+  "queue_keep_warm_max_minutes": {
+   "type": "integer",
+   "maximum": 480.0,
+   "minimum": 5.0,
+   "default": 120
+  },
+  "nozzle_temp_presets": {
+   "type": "string",
+   "default": ""
+  },
+  "bed_temp_presets": {
+   "type": "string",
+   "default": ""
+  },
+  "chamber_temp_presets": {
+   "type": "string",
+   "default": ""
+  },
+  "fan_speed_presets": {
+   "type": "string",
+   "default": ""
+  },
+  "local_login_enabled": {
+   "type": "boolean",
+   "default": true
+  },
+  "ldap_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "ldap_server_url": {
+   "type": "string",
+   "default": ""
+  },
+  "ldap_bind_dn": {
+   "type": "string",
+   "default": ""
+  },
+  "ldap_bind_password": {
+   "type": "string",
+   "default": ""
+  },
+  "ldap_search_base": {
+   "type": "string",
+   "default": ""
+  },
+  "ldap_user_filter": {
+   "type": "string",
+   "default": "(sAMAccountName={username})"
+  },
+  "ldap_security": {
+   "type": "string",
+   "default": "starttls"
+  },
+  "ldap_group_mapping": {
+   "type": "string",
+   "default": ""
+  },
+  "ldap_auto_provision": {
+   "type": "boolean",
+   "default": false
+  },
+  "ldap_default_group": {
+   "type": "string",
+   "default": ""
+  },
+  "obico_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "obico_ml_url": {
+   "type": "string",
+   "default": ""
+  },
+  "bambuddy_internal_url": {
+   "type": "string",
+   "default": ""
+  },
+  "obico_ml_token": {
+   "type": "string",
+   "default": ""
+  },
+  "obico_sensitivity": {
+   "type": "string",
+   "default": "medium"
+  },
+  "obico_action": {
+   "type": "string",
+   "default": "notify"
+  },
+  "obico_poll_interval": {
+   "type": "integer",
+   "maximum": 120.0,
+   "minimum": 5.0,
+   "default": 10
+  },
+  "obico_enabled_printers": {
+   "type": "string",
+   "default": ""
+  },
+  "octoeverywhere_enabled": {
+   "type": "boolean",
+   "default": false
+  },
+  "octoeverywhere_api_key": {
+   "type": "string",
+   "default": ""
+  },
+  "octoeverywhere_api_key_configured": {
+   "type": "boolean",
+   "default": false
+  },
+  "octoeverywhere_poll_interval": {
+   "type": "integer",
+   "maximum": 30.0,
+   "minimum": 5.0,
+   "default": 20
+  },
+  "octoeverywhere_confidence": {
+   "type": "string",
+   "default": "medium"
+  },
+  "octoeverywhere_action": {
+   "type": "string",
+   "default": "notify"
+  },
+  "octoeverywhere_enabled_printers": {
+   "type": "string",
+   "default": ""
+  },
+  "forecast_global_lead_time_days": {
+   "type": "integer",
+   "minimum": 0.0,
+   "default": 0
+  },
+  "location_sensor_poll_interval": {
+   "type": "integer",
+   "maximum": 3600.0,
+   "minimum": 60.0,
+   "default": 120
+  },
+  "location_sensor_alert_defaults": {
+   "type": "string",
+   "default": ""
+  },
+  "default_sidebar_order": {
+   "type": "string",
+   "default": ""
+  }
+ },
+ "AppSettingsUpdate": {
+  "auto_archive": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "save_thumbnails": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "capture_finish_photo": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "finish_photo_restore_plate": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_filament_cost": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "currency": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "energy_cost_per_kwh": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "energy_tracking_mode": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "energy_price_source": {
+   "anyOf": [
+    {
+     "type": "string",
+     "enum": [
+      "fixed",
+      "homeassistant"
+     ]
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "energy_price_ha_entity": {
+   "anyOf": [
+    {
+     "type": "string",
+     "maxLength": 255
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "spoolman_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "spoolman_url": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "spoolman_sync_mode": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "spoolman_disable_weight_sync": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "spoolman_report_partial_usage": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "auto_add_unknown_rfid": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "disable_filament_warnings": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "prefer_lowest_filament": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "check_updates": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "check_printer_firmware": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "include_beta_updates": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "announcements_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "announcements_all_users": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "local_login_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "language": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "notification_language": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "bed_cooled_threshold": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "pause_warning_minutes": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 120.0,
+     "minimum": 1.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ams_humidity_good": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ams_humidity_fair": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ams_temp_good": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ams_temp_fair": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ams_temp_alarm": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ams_history_retention_days": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "minimum": 1.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "printer_sensor_history_retention_days": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "minimum": 1.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "queue_drying_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "queue_drying_block": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ambient_drying_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ambient_drying_sustained_minutes": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 240.0,
+     "minimum": 0.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "print_drying_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "drying_presets": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ams_humidity_thresholds": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "per_printer_mapping_expanded": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "date_format": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "time_format": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_printer_id": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "pipeline_max_copies": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "virtual_printer_archive_name_source": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "dark_style": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "dark_background": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "dark_accent": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "light_style": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "light_background": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "light_accent": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ftp_retry_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ftp_retry_count": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ftp_retry_delay": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ftp_timeout": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "mqtt_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "mqtt_broker": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "mqtt_port": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "mqtt_username": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "mqtt_password": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "mqtt_topic_prefix": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "mqtt_use_tls": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "external_url": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "docker_compose_dir": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ha_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ha_url": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ha_token": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "library_disk_warning_gb": {
+   "anyOf": [
+    {
+     "type": "number"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "camera_view_mode": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "camera_light_mode": {
+   "anyOf": [
+    {
+     "type": "string",
+     "enum": [
+      "off",
+      "all",
+      "selected"
+     ]
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "camera_light_delay": {
+   "anyOf": [
+    {
+     "type": "number",
+     "maximum": 5.0,
+     "minimum": 0.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "model_dispatch_order": {
+   "anyOf": [
+    {
+     "type": "string",
+     "enum": [
+      "fewest_hours",
+      "most_hours",
+      "least_recently_used",
+      "priority"
+     ]
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "preferred_slicer": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "open_in_slicer": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "slice_engine": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "use_slicer_api": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "orcaslicer_api_url": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "bambu_studio_api_url": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "slicer_stall_timeout_minutes": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 240.0,
+     "minimum": 1.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "prometheus_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "prometheus_token": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "low_stock_threshold": {
+   "anyOf": [
+    {
+     "type": "number",
+     "maximum": 99.9,
+     "minimum": 0.1
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "session_max_hours": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 720.0,
+     "minimum": 1.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "user_notifications_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_bed_levelling": {
+   "anyOf": [
+    {
+     "type": "string",
+     "enum": [
+      "off",
+      "on",
+      "auto"
+     ]
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_flow_cali": {
+   "anyOf": [
+    {
+     "type": "string",
+     "enum": [
+      "off",
+      "on",
+      "auto"
+     ]
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_vibration_cali": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_layer_inspect": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_timelapse": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_nozzle_offset_cali": {
+   "anyOf": [
+    {
+     "type": "string",
+     "enum": [
+      "off",
+      "on",
+      "auto"
+     ]
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_confirm_outcome": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "confirm_outcome_external_prints": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "confirm_default_good_on_plate_clear": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "stagger_group_size": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 50.0,
+     "minimum": 1.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "stagger_interval_minutes": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 60.0,
+     "minimum": 1.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "billing_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "printer_kill_switch_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "finance_budget_reset_day": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 31.0,
+     "minimum": 1.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "finance_budget_reset_timezone": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "require_plate_clear": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "queue_shortest_first": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "queue_max_concurrent_uploads": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 16.0,
+     "minimum": 1.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "preheat_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "preheat_filament_targets": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "preheat_max_wait_seconds": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 3600.0,
+     "minimum": 60.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "preheat_soak_seconds": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 1800.0,
+     "minimum": 0.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "queue_keep_bed_warm": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "queue_keep_warm_bed_temp": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 110.0,
+     "minimum": 40.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "queue_keep_warm_max_minutes": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 480.0,
+     "minimum": 5.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "nozzle_temp_presets": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "bed_temp_presets": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "chamber_temp_presets": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "fan_speed_presets": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "gcode_snippets": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "local_backup_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "local_backup_schedule": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "local_backup_time": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "local_backup_retention": {
+   "anyOf": [
+    {
+     "type": "integer"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "local_backup_path": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_server_url": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_bind_dn": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_bind_password": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_search_base": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_user_filter": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_security": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_group_mapping": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_auto_provision": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "ldap_default_group": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "obico_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "obico_ml_url": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "bambuddy_internal_url": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "obico_ml_token": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "obico_sensitivity": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "obico_action": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "obico_poll_interval": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 120.0,
+     "minimum": 5.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "obico_enabled_printers": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "octoeverywhere_enabled": {
+   "anyOf": [
+    {
+     "type": "boolean"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "octoeverywhere_api_key": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "octoeverywhere_poll_interval": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 30.0,
+     "minimum": 5.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "octoeverywhere_confidence": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "octoeverywhere_action": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "octoeverywhere_enabled_printers": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "default_sidebar_order": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "forecast_global_lead_time_days": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "minimum": 0.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "location_sensor_poll_interval": {
+   "anyOf": [
+    {
+     "type": "integer",
+     "maximum": 3600.0,
+     "minimum": 60.0
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "location_sensor_alert_defaults": {
+   "anyOf": [
+    {
+     "type": "string",
+     "maxLength": 2000
+    },
+    {
+     "type": "null"
+    }
+   ]
+  }
+ },
+ "_UI_PREFERENCE_FIELDS": [
+  "require_plate_clear",
+  "check_printer_firmware",
+  "camera_view_mode",
+  "time_format",
+  "date_format",
+  "drying_presets",
+  "ams_humidity_thresholds",
+  "ams_humidity_good",
+  "ams_humidity_fair",
+  "ams_temp_good",
+  "ams_temp_fair",
+  "bed_cooled_threshold",
+  "nozzle_temp_presets",
+  "bed_temp_presets",
+  "chamber_temp_presets",
+  "fan_speed_presets"
+ ],
+ "_UI_FLAG_FIELDS": [
+  "billing_enabled",
+  "user_notifications_enabled",
+  "currency",
+  "check_updates",
+  "queue_shortest_first",
+  "use_slicer_api",
+  "open_in_slicer",
+  "preferred_slicer",
+  "disable_filament_warnings",
+  "prefer_lowest_filament",
+  "per_printer_mapping_expanded",
+  "default_filament_cost",
+  "default_bed_levelling",
+  "default_flow_cali",
+  "default_vibration_cali",
+  "default_layer_inspect",
+  "default_timelapse",
+  "default_nozzle_offset_cali",
+  "default_confirm_outcome",
+  "stagger_group_size",
+  "stagger_interval_minutes",
+  "library_disk_warning_gb",
+  "low_stock_threshold",
+  "location_sensor_poll_interval",
+  "location_sensor_alert_defaults",
+  "pipeline_max_copies",
+  "language",
+  "dark_style",
+  "dark_background",
+  "dark_accent",
+  "light_style",
+  "light_background",
+  "light_accent",
+  "spoolman_enabled",
+  "forecast_global_lead_time_days",
+  "default_printer_id"
+ ]
+}

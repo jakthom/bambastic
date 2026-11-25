@@ -1,0 +1,56 @@
+[
+ {
+  "name": "Clean Carbon Rods",
+  "description": "Wipe carbon rods with a dry cloth",
+  "default_interval_hours": 100.0,
+  "icon": "Sparkles"
+ },
+ {
+  "name": "Lubricate Steel Rods",
+  "description": "Apply lubricant to steel rods for smooth motion",
+  "default_interval_hours": 50.0,
+  "icon": "Droplet"
+ },
+ {
+  "name": "Clean Steel Rods",
+  "description": "Wipe steel rods with a dry cloth",
+  "default_interval_hours": 100.0,
+  "icon": "Sparkles"
+ },
+ {
+  "name": "Lubricate Linear Rails",
+  "description": "Apply lubricant to linear rails for smooth motion",
+  "default_interval_hours": 50.0,
+  "icon": "Droplet"
+ },
+ {
+  "name": "Clean Linear Rails",
+  "description": "Wipe linear rails with a dry cloth to remove dust and debris",
+  "default_interval_hours": 100.0,
+  "icon": "Sparkles"
+ },
+ {
+  "name": "Clean Nozzle/Hotend",
+  "description": "Clean nozzle exterior and perform cold pull if needed",
+  "default_interval_hours": 100.0,
+  "icon": "Flame"
+ },
+ {
+  "name": "Check Belt Tension",
+  "description": "Verify and adjust belt tension for X/Y axes",
+  "default_interval_hours": 200.0,
+  "icon": "Ruler"
+ },
+ {
+  "name": "Clean Build Plate",
+  "description": "Deep clean build plate with IPA or soap",
+  "default_interval_hours": 25.0,
+  "icon": "Square"
+ },
+ {
+  "name": "Check PTFE Tube",
+  "description": "Inspect PTFE tube for wear or discoloration",
+  "default_interval_hours": 500.0,
+  "icon": "Cable"
+ }
+]
